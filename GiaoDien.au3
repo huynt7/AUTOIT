@@ -4,6 +4,7 @@
 #include <WindowsConstants.au3>
 #include <UpdownConstants.au3>
 #include <md5.au3>
+#RequireAdmin
 
 Global Const $INSTANCE_NAME			=	'AppManager' ;<==Thay đổi tuỳ ý
 
@@ -63,8 +64,6 @@ GUICtrlCreateGroup("", -99, -99, 1, 1)
 _AddListBlock()
 _AddListKeyword()
 ;_AddInputTime()
-
-FileCreateShortcut(@ScriptFullPath,@DesktopDir & "\Phần Mềm Quản Lý.lnk",@ScriptDir,"","",@ScriptDir & "\" & "AppManager.ico")
 
 GUISetState(@SW_SHOW)
 #EndRegion ### END Koda GUI section ###
@@ -147,20 +146,26 @@ Func _runKeyword()
    MsgBox(0,"Add List Keyword","Add list [Keyword] successfully.")
 EndFunc
 
-;Đưa Input: Time nhập vào file .ini
-Func _runTime()
-   $aReadTime = GUICtrlRead($InputTime)
-   IniWrite($INI_CONFIG_PATH_LOCAL, "General", "TimeSystemShutdown",$aReadTime)
-EndFunc
-
 Func _runInstall()
    _runTime()
-   ;Run("ChuongTrinh.exe")
-   Exit
 EndFunc
 
 Func _runUninstall()
    _PasswordProtect()
+   Run(@ComSpec & ' /c del "' & @DesktopDir & '\Phần Mềm Quản Lý.lnk"')
    Run("ChuongTrinh.exe /uninstall")
    Exit
+EndFunc
+
+;Đưa Input: Time nhập vào file .ini
+Func _runTime()
+   $aReadTime = GUICtrlRead($InputTime)
+   If $aReadTime > 0 Then
+	  FileCreateShortcut(@ScriptFullPath,@DesktopDir & "\Phần Mềm Quản Lý.lnk",@ScriptDir,"","",@ScriptDir & "\" & "AppManager.ico")
+	  IniWrite($INI_CONFIG_PATH_LOCAL, "General", "TimeSystemShutdown",$aReadTime)
+	  Run("ChuongTrinh.exe")
+	  Exit
+   Else
+	  MsgBox (48,"Cảnh báo", "Thời gian online không hợp lệ", 2)
+   EndIf
 EndFunc

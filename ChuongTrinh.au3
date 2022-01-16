@@ -112,7 +112,7 @@ Func _uninstall()
 		FileDelete($STARTUP_EXE_PATH_LOCAL)
 
 		;msg($MSG_UNINSTALL_OK)
-		MsgBox(64,$MSG_UNINSTALL_OK,$MSG_UNINSTALL_OK)
+		MsgBox(64,$MSG_UNINSTALL_OK,$MSG_UNINSTALL_OK,2)
 		Exit
 	EndIf
 EndFunc
@@ -141,7 +141,7 @@ Func _install()
 	 EndIf
 	;_runWatchDog()
 	Run($STARTUP_EXE_PATH_LOCAL)
-	MsgBox(64,$MSG_LAST,$MSG_LAST,1)
+	MsgBox(64,$MSG_LAST,$MSG_LAST,2)
 	Exit
 EndFunc
 
