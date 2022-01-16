@@ -1,0 +1,1 @@
+ChuongTrinh.exe /uninstall
